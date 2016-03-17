@@ -1,10 +1,11 @@
 package actors;
 
+import java.lang.Runnable;
 import java.util.Random;
 
 public class Producer implements Runnable {
 
-	private static final int SLEEP_UPPER_BOUND = 1000;  // Sleep up to a minute.
+	private static final int SLEEP_UPPER_BOUND = 5000;  // Sleep up to these milliseconds.
 
 	@Override
 	public void run() {
