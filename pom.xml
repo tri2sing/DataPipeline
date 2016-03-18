@@ -4,8 +4,16 @@
 	<groupId>DataPipeline</groupId>
 	<artifactId>DataPipeline</artifactId>
 	<version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>0.9.0.0</version>
+        </dependency>
+    </dependencies>
+
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -17,11 +25,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka-clients</artifactId>
-			<version>0.9.0.0</version>
-		</dependency>
-	</dependencies>
 </project>
