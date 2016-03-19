@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class Broker {
 
-	Properties props = null;
+	Properties properties = null;
 
 	public Broker(String propertiesFile) {
 		InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(propertiesFile);
@@ -16,15 +16,15 @@ public class Broker {
 			System.exit(1);
 		}
 		try {
-			props = new Properties();
-			props.load(inStream);
+			properties = new Properties();
+			properties.load(inStream);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public void printProperties() {
-		for(Map.Entry<?, ?> entry: props.entrySet()) {
+		for(Map.Entry<?, ?> entry: properties.entrySet()) {
 			String key = (String) entry.getKey();
 			String val = (String) entry.getValue();
 			System.out.println(key + ": " + val);
