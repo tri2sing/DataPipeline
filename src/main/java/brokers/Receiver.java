@@ -24,7 +24,7 @@ public class Receiver extends Broker{
     	while(true) {
     		ConsumerRecords<String, String> records = receiver.poll(1000);
     		for (ConsumerRecord<String, String> record: records) {
-    			System.out.printf("offset = %d, key = %s, value = %s\n", record.offset(), record.key(), record.value());
+    			System.out.printf("offset = %d, key = %s, value = %s\n", record.offset(), record.value());
     		}
     	}
     }
