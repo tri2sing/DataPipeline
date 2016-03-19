@@ -2,6 +2,7 @@
 An emulator for multiple producers that emit time series data and that data is gathered by consumer and used to compute statistics.
 
 Prerequisites
+
 1.  OS X Yosemite Version 10.10.5
 2.  Java 1.8
 3.  gradle-2.12
