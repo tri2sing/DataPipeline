@@ -3,11 +3,12 @@ An emulator for multiple producers that emit time series data and that data is g
 
 Prerequisites
 
-1.  OS X Yosemite Version 10.10.5
-2.  Java 1.8
-3.  gradle-2.12
-4.  zookeeper-3.4.7
-5.  kafka-0.9.0.0
+1. OS X Yosemite Version 10.10.5
+2. Homebrew 0.9.5 
+3. Java 1.8
+3. gradle-2.12
+4. zookeeper-3.4.7
+5. kafka-0.9.0.0
 
 Maven dependency for Kafka clients
 ```xml
