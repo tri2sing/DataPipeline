@@ -17,6 +17,7 @@ The consumer stores the data in a database and then uses the data to compute sta
 
 ## Development Environment
 This project was developed in one IDE. You are free to use another.  
+
 1. Eclipse Luna 
 2. Maven (Eclipse m2e 1.5 plugin)
 
