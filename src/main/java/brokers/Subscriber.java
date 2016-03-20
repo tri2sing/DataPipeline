@@ -10,15 +10,14 @@ import utils.PropertiesLoader;
 
 public class Subscriber {
 	
-	private PropertiesLoader loader;
 	private KafkaConsumer<String, String> receiver;
 	
     public Subscriber() {
-        this("receiver.properties");
+        this("subscriberer.properties");
     }
 
     public Subscriber(String propertiesFile) {
-        loader = new PropertiesLoader(propertiesFile);
+        PropertiesLoader loader = new PropertiesLoader(propertiesFile);
         receiver = new KafkaConsumer<>(loader.getProperties());
     }
     

@@ -1,4 +1,4 @@
-package misc;
+package trials;
 
 import java.net.URL;
 import java.net.URLClassLoader;

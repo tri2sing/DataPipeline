@@ -8,15 +8,14 @@ import utils.PropertiesLoader;
 
 public class Publisher {
 	
-	private PropertiesLoader loader;
 	private KafkaProducer<String, String> sender;
 	
 	public Publisher() {
-		this("sender.properties");
+		this("publisher.properties");
 	}
 	
 	public Publisher(String propertiesFile) {
-        loader = new PropertiesLoader(propertiesFile);
+        PropertiesLoader loader = new PropertiesLoader(propertiesFile);
 		sender = new KafkaProducer<String, String>(loader.getProperties());
 	}
 

@@ -1,4 +1,4 @@
-package misc;
+package trials;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

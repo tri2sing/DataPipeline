@@ -11,19 +11,20 @@ public class Producer implements Runnable {
 
 	private static final float PERCENT_MULTIPLIER = 100.0f;
 	private static final int DEFAULT_MINUTES = 5; // Default time to run the producer
-	private static final int INTIAL_SLEEP_MILLIS = 15000;  // Initial sleep to randomize thread start times.
-	private static final int INTER_SAMPLE_SLEEP_MILLIS = 60000; // Duration to sleep between each measurement
+	private static final String DEFAULT_TOPIC = "metrics";
+	private static final int INTIAL_SLEEP_MILLIS = 15000; // Initial sleep to randomize thread start times.
+	private static final int INTER_SAMPLE_SLEEP_MILLIS = 60000; // Milliseconds to sleep between each measurement
 
 	private int numMinutes;
 	private String host;
 	private String vm;
 	private Random random;
-	
+
 	public Producer() {
-		this(DEFAULT_MINUTES);
+		this(DEFAULT_MINUTES, DEFAULT_TOPIC);
 	}
-	
-	public Producer(int numMinutes) {
+
+	public Producer(int numMinutes, String topic) {
 		this.numMinutes = numMinutes;
 		random = new Random();
 		try {
@@ -32,7 +33,7 @@ public class Producer implements Runnable {
 			host = "unknown";
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		long id = Thread.currentThread().getId();
@@ -48,33 +49,37 @@ public class Producer implements Runnable {
 			JSONObject dsk = createMetric("disk");
 			JSONObject mem = createMetric("memory");
 			System.out.println(cpu.toString());
-			System.out.println(dsk.toString());
-			System.out.println(mem.toString());
-			// Sleep for a minute to mimic generation of metrics once a minute.
-			try {
-				Thread.sleep(INTER_SAMPLE_SLEEP_MILLIS);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			// Sleep for a minute to emulate once a minute metrics generation.
+			// Skip the sleep after the last metric generation.
+			if (i < (numMinutes - 1)) {
+				try {
+					Thread.sleep(INTER_SAMPLE_SLEEP_MILLIS);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
-	
+
 	/***
-	 * Generate a random utilization metric from [0%, 100%)
-	 * @param object can be "cpu", "disk", "memory", etc.
+	 * Generate a random utilization metric in range [0%, 100%) 0% is inclusivee and 100% is exclusive due to use of default
+	 * random generator.
+	 * 
+	 * @param object
+	 *            can be "cpu", "disk", "memory", etc.
 	 * @return a JSON object with corresponding metric.
 	 */
 	// JSONObject is built using HashMap without parameterizing <k, v> correctly.
 	// Hence we put in the suppress warning annotation when using the put method.
-	@SuppressWarnings("unchecked") 
+	@SuppressWarnings("unchecked")
 	private JSONObject createMetric(String object) {
 		JSONObject obj = new JSONObject();
 		obj.put("host", this.host);
 		obj.put("vm", this.vm);
 		obj.put("object", object);
 		obj.put("type", "percentutilization");
-		obj.put("value",  new Float(random.nextFloat() * PERCENT_MULTIPLIER));
-		obj.put("timestamp",  System.currentTimeMillis());  // Time since Epoch.
+		obj.put("value", new Float(random.nextFloat() * PERCENT_MULTIPLIER));
+		obj.put("timestamp", System.currentTimeMillis()); // Time since Epoch.
 		return obj;
 	}
 
