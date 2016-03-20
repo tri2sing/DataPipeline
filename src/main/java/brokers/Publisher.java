@@ -4,17 +4,20 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.json.simple.JSONObject;
 
-public class Sender extends Broker{
+import utils.PropertiesLoader;
+
+public class Publisher {
 	
+	private PropertiesLoader loader;
 	private KafkaProducer<String, String> sender;
 	
-	public Sender() {
+	public Publisher() {
 		this("sender.properties");
 	}
 	
-	public Sender(String propertiesFile) {
-		super(propertiesFile);
-		sender = new KafkaProducer<String, String>(properties);
+	public Publisher(String propertiesFile) {
+        loader = new PropertiesLoader(propertiesFile);
+		sender = new KafkaProducer<String, String>(loader.getProperties());
 	}
 
 	public void send(String topic, JSONObject message ) {
@@ -25,9 +28,9 @@ public class Sender extends Broker{
 		sender.send(new ProducerRecord<String, String>(topic, message));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
-		Sender s = new Sender();
-		s.printProperties();
+		Publisher s = new Publisher();
 		for (int i = 0; i < 100; i++) {
 			JSONObject obj = new JSONObject();
 			obj.put("id", new Integer(i));

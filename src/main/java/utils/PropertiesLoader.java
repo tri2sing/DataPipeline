@@ -1,15 +1,15 @@
-package brokers;
+package utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-public class Broker {
+public class PropertiesLoader {
 
 	Properties properties = null;
 
-	public Broker(String propertiesFile) {
+	public PropertiesLoader(String propertiesFile) {
 		InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(propertiesFile);
 		if (inStream == null) {
 			System.out.println("Unable to find " + propertiesFile);
@@ -31,5 +31,12 @@ public class Broker {
 		}
 	}
 	
+	public Properties getProperties() {
+		return properties;
+	}
+	
+	public String getProperty(String key) {
+		return properties.getProperty(key);
+	}
 	
 }

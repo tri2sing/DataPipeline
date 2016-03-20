@@ -6,17 +6,20 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-public class Receiver extends Broker{
+import utils.PropertiesLoader;
+
+public class Subscriber {
 	
+	private PropertiesLoader loader;
 	private KafkaConsumer<String, String> receiver;
 	
-    public Receiver() {
+    public Subscriber() {
         this("receiver.properties");
     }
 
-    public Receiver(String propertiesFile) {
-        super(propertiesFile);
-        receiver = new KafkaConsumer<>(properties);
+    public Subscriber(String propertiesFile) {
+        loader = new PropertiesLoader(propertiesFile);
+        receiver = new KafkaConsumer<>(loader.getProperties());
     }
     
     public void receive(String topic) {
@@ -30,8 +33,7 @@ public class Receiver extends Broker{
     }
 
     public static void main(String[] args) {
-        Receiver receiver = new Receiver();
-        receiver.printProperties();
+        Subscriber receiver = new Subscriber();
         receiver.receive("metrics");
         
     }
