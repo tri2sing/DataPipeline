@@ -6,8 +6,9 @@ public class ProducerPool {
 
 	private Thread[] producer;
 	private int numProducers;
-	int numMinutes;
-	String topic;
+	private int numMinutes;
+	private String publisherTopic;
+	private String pubPropsFile;
 
 	public ProducerPool() {
 		this("producerpool.properties");
@@ -15,7 +16,8 @@ public class ProducerPool {
 	
 	public ProducerPool(String propertiesFile) {
         PropertiesLoader loader = new PropertiesLoader(propertiesFile);
-        this.topic = loader.getProperty("producer.publish.topic");
+        this.publisherTopic = loader.getProperty("producer.publish.topic");
+        this.pubPropsFile = loader.getProperty("publisher.properties.file");
         try {
         this.numProducers = Integer.parseInt(loader.getProperty("producers.count"));
         this.numMinutes = Integer.parseInt(loader.getProperty("producer.duration.minutes"));
@@ -26,17 +28,18 @@ public class ProducerPool {
         instantiateProducers();
 	}
 	
-	public ProducerPool(int numProducers, int numMinutes, String topic) {
+	public ProducerPool(int numProducers, int numMinutes, String publisherTopic, String publisherPropertiesFile) {
 		this.numProducers = numProducers;
 		this.numMinutes = numMinutes;
-		this.topic = topic;
+		this.publisherTopic = publisherTopic;
+		this.pubPropsFile = publisherPropertiesFile;
 		instantiateProducers();
 	}
 
 	private void instantiateProducers() {
 		producer = new Thread[numProducers];
 		for (int i = 0; i < numProducers; i++) {
-			producer[i] = new Thread(new Producer(numMinutes, topic));
+			producer[i] = new Thread(new Producer(numMinutes, publisherTopic, pubPropsFile));
 		}
 	}
 	

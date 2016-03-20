@@ -7,37 +7,45 @@ import java.util.Random;
 
 import org.json.simple.JSONObject;
 
+import brokers.Publisher;
+
 public class Producer implements Runnable {
 
-	private static final float PERCENT_MULTIPLIER = 100.0f;
-	private static final int DEFAULT_MINUTES = 5; // Default time to run the producer
+	private static final int DEFAULT_MINUTES = 5; // Default duration to run the producer
 	private static final String DEFAULT_TOPIC = "metrics";
-	private static final int INTIAL_SLEEP_MILLIS = 15000; // Initial sleep to randomize thread start times.
+	private static final String DEFAULT_PUBLISHER_PROPS_FILE = "publisher.properties";
+
+	private static final int INTIAL_SLEEP_MILLIS = 15000; // Initial sleep range to randomize thread start times.
 	private static final int INTER_SAMPLE_SLEEP_MILLIS = 60000; // Milliseconds to sleep between each measurement
+	private static final float PERCENT_MULTIPLIER = 100.0f;
 
 	private int numMinutes;
+	private String publisherTopic;
 	private String host;
 	private String vm;
 	private Random random;
+	private Publisher publisher;
 
 	public Producer() {
-		this(DEFAULT_MINUTES, DEFAULT_TOPIC);
+		this(DEFAULT_MINUTES, DEFAULT_TOPIC, DEFAULT_PUBLISHER_PROPS_FILE);
 	}
 
-	public Producer(int numMinutes, String topic) {
+	public Producer(int numMinutes, String publisherTopic, String publisherPropertiesFile) {
 		this.numMinutes = numMinutes;
-		random = new Random();
+		this.publisherTopic = publisherTopic;
+		this.random = new Random();
+		publisher = new Publisher(publisherPropertiesFile);
 		try {
-			host = InetAddress.getLocalHost().getHostName();
+			this.host = InetAddress.getLocalHost().getHostName();
 		} catch (UnknownHostException e) {
-			host = "unknown";
+			this.host = "unknown";
 		}
 	}
 
 	@Override
 	public void run() {
 		long id = Thread.currentThread().getId();
-		vm = Long.toString(id);
+		this.vm = Long.toString(id);
 		int millis = random.nextInt(INTIAL_SLEEP_MILLIS + 1);
 		try {
 			Thread.sleep(millis);
@@ -48,7 +56,9 @@ public class Producer implements Runnable {
 			JSONObject cpu = createMetric("cpu");
 			JSONObject dsk = createMetric("disk");
 			JSONObject mem = createMetric("memory");
-			System.out.println(cpu.toString());
+			publisher.send(publisherTopic, cpu);
+			publisher.send(publisherTopic, dsk);
+			publisher.send(publisherTopic, mem);
 			// Sleep for a minute to emulate once a minute metrics generation.
 			// Skip the sleep after the last metric generation.
 			if (i < (numMinutes - 1)) {
@@ -58,6 +68,7 @@ public class Producer implements Runnable {
 					e.printStackTrace();
 				}
 			}
+			System.out.format("Host = %s, VM = %s, Iteration = %d\n", host, vm, i);
 		}
 	}
 

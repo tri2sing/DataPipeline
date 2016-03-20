@@ -13,7 +13,7 @@ public class Subscriber {
 	private KafkaConsumer<String, String> receiver;
 	
     public Subscriber() {
-        this("subscriberer.properties");
+        this("subscriber.properties");
     }
 
     public Subscriber(String propertiesFile) {
