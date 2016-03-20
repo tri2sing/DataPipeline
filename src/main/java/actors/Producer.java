@@ -73,11 +73,10 @@ public class Producer implements Runnable {
 	}
 
 	/***
-	 * Generate a random utilization metric in range [0%, 100%) 0% is inclusivee and 100% is exclusive due to use of default
-	 * random generator.
+	 * Generate a random utilization metric in range [0%, 100%) 
+	 * 0% is inclusive and 100% is exclusive due to use of default random generator.
 	 * 
-	 * @param object
-	 *            can be "cpu", "disk", "memory", etc.
+	 * @param object can be "cpu", "disk", "memory", etc.
 	 * @return a JSON object with corresponding metric.
 	 */
 	// JSONObject is built using HashMap without parameterizing <k, v> correctly.
