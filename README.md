@@ -14,6 +14,7 @@ The consumer stores the data in a database and then uses the data to compute sta
 4. gradle-2.12 (Kafka prerequisite)
 5. zookeeper-3.4.7 (Kafka prerequisite)
 6. kafka-0.9.0.0
+7. mysql-5.7.11
 
 ## Development Environment
 This project was developed in one IDE. You are free to use another.  
@@ -39,4 +40,17 @@ Create a Kafka topic
 ```shell
 $ kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic metrics
 ```
+
+Install MySQL on OS X using Homebrew
+```shell
+$ brew install mysql
+```
+
+Start MySQL server
+```shell
+$ mysql.server start
+```
+
+
+
 
