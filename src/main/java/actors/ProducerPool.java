@@ -2,25 +2,27 @@ package actors;
 
 public class ProducerPool {
 
-	private Thread[] producerThread;
-	private int numThreads;
+	private Thread[] producer;
+	private int numProducers;
+	int numMinutes;
 
-	public ProducerPool(int numProducers) {
+	public ProducerPool(int numProducers, int numMinutes) {
 
-		producerThread = new Thread[numProducers];
+		this.numProducers = numProducers;
+		this.numMinutes = numMinutes;
+		producer = new Thread[numProducers];
 		for (int i = 0; i < numProducers; i++) {
-			numThreads = numProducers;
-			producerThread[i] = new Thread(new Producer());
+			producer[i] = new Thread(new Producer(numMinutes));
 		}
 	}
 
 	public void emulate() {
-		for (int i = 0; i < numThreads; i++) {
-			producerThread[i].start();
+		for (int i = 0; i < numProducers; i++) {
+			producer[i].start();
 		}
 		try {
-			for (int i = 0; i < numThreads; i++) {
-				producerThread[i].join();
+			for (int i = 0; i < numProducers; i++) {
+				producer[i].join();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();	
@@ -28,7 +30,7 @@ public class ProducerPool {
 	}
 	
 	public static void main(String [] args) {
-		ProducerPool pool = new ProducerPool(10);
+		ProducerPool pool = new ProducerPool(5, 5);
 		pool.emulate();
 	}
 }
