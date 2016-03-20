@@ -14,17 +14,19 @@ The consumer stores the data in a database and then uses the data to compute sta
 4. gradle-2.12 (Kafka prerequisite)
 5. zookeeper-3.4.7 (Kafka prerequisite)
 6. kafka-0.9.0.0
-7. mysql-5.7.11
+7. Kafka-clients-0.9.0.0
+8. mysql-5.7.11
+9. mysql-connector-java-5.1.38
+10. json-simple-1.1
 
 ## Development Environment
-This project was developed in one IDE. You are free to use another.  
+This project was developed in one IDE. You are free to use another, but please comprehend all dependencies.  
 
 1. Eclipse Luna 
 2. Maven (Eclipse m2e 1.5 plugin)
 
 ## Instructions
-Install Kafka on OS X using Homebrew.
-This automatically installs dependencies (gradle and zookeeper) 
+Install Kafka on OS X using Homebrew (automatically installs gradle and zookeeper) 
 ```shell
 $ brew install kafka
 ```
@@ -32,7 +34,7 @@ Start Zookeeper
 ```shell
 $ zkserver start
 ```
-Start Kafka using default properties
+Start Kafka with default properties
 ```shell
 $ kafka-server-start /usr/local/etc/kafka/server.properties
 ```
@@ -46,10 +48,18 @@ Install MySQL on OS X using Homebrew
 $ brew install mysql
 ```
 
-Start MySQL server
+Start MySQL server with default settings
 ```shell
 $ mysql.server start
 ```
+
+Create database and tables
+```shell
+$ mysql -u root
+mysql> create database metrics;
+mysql> use metrics;
+```
+
 
 
 
