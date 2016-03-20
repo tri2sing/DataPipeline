@@ -58,6 +58,9 @@ Create database and tables
 $ mysql -u root
 mysql> create database metrics;
 mysql> use metrics;
+mysql> CREATE TABLE CPU ( Host VARCHAR(128), VM VARCHAR(128), Timestamp DATETIME, Type VARCHAR(128), Value DECIMAL(8,2) );
+mysql> CREATE TABLE DISK ( Host VARCHAR(128), VM VARCHAR(128), Timestamp DATETIME, Type VARCHAR(128), Value DECIMAL(8,2) );
+mysql> CREATE TABLE MEMORY ( Host VARCHAR(128), VM VARCHAR(128), Timestamp DATETIME, Type VARCHAR(128), Value DECIMAL(8,2) );
 ```
 
 
