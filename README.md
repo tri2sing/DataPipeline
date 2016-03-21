@@ -23,7 +23,7 @@ The consumer stores the data in a database and then uses the data to compute sta
 This project was developed in one IDE. You are free to use another, but please comprehend all dependencies.  
 
 1. Eclipse Luna 
-2. Maven (Eclipse m2e 1.5 plugin)
+2. Eclipse Maven Plugin (m2e 1.5.1)
 
 ## Instructions
 Install Kafka on OS X using Homebrew (automatically installs gradle and zookeeper) 

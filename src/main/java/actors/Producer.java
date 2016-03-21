@@ -12,7 +12,7 @@ import brokers.Publisher;
 public class Producer implements Runnable {
 
 	private static final int INTIAL_SLEEP_MILLIS = 15000; // Initial sleep range to randomize thread start times.
-	private static final int INTER_SAMPLE_SLEEP_MILLIS = 60000; // Milliseconds to sleep between each measurement
+	private static final int INTER_SAMPLE_SLEEP_MILLIS = 5000; // Milliseconds to sleep between each measurement
 	private static final float PERCENT_MULTIPLIER = 100.0f;
 
 	private int numMinutes;
@@ -81,7 +81,7 @@ public class Producer implements Runnable {
 		obj.put("vm", this.vm);
 		obj.put("unit", "percent");
 		obj.put("value", new Float(random.nextFloat() * PERCENT_MULTIPLIER));
-		obj.put("epoch", System.currentTimeMillis()); // Time since Epoch.
+		obj.put("epoch", new Long(System.currentTimeMillis())); // Time since Epoch.
 		return obj;
 	}
 

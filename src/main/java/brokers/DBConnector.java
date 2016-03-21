@@ -37,7 +37,7 @@ public class DBConnector {
 	public void insert(JSONArray records) {
 		String cpusql = "INSERT INTO CPU (Host, VM, Timestamp, Type, Value) VALUES(?, ?, ?, ?, ?)";
 		String dsksql = "INSERT INTO DISK (Host, VM, Timestamp, Type, Value) VALUES(?, ?, ?, ?, ?)";
-		String memsql = "INSERT INTO CPU (Host, VM, Timestamp, Type, Value) VALUES(?, ?, ?, ?, ?)";
+		String memsql = "INSERT INTO MEMORY (Host, VM, Timestamp, Type, Value) VALUES(?, ?, ?, ?, ?)";
 
 		PreparedStatement cpups, dskps, memps;
 		try {
@@ -46,12 +46,13 @@ public class DBConnector {
 			memps = conn.prepareStatement(memsql);
 			for (Object record : records) {
 				JSONObject obj = (JSONObject) record;
+				System.out.println(obj);
 				String metric = (String) obj.get("metric");
 				String host = (String) obj.get("host");
 				String vm = (String) obj.get("vm");
 				String unit = (String) obj.get("unit");
-				float value = Float.parseFloat((String) obj.get("value"));
-				long epoch = Long.parseLong((String) obj.get("epcoh"));
+				long epoch = Long.valueOf((Long) obj.get("epoch"));
+				double value = Double.valueOf((Double) obj.get("value"));
 				Timestamp timestamp = new Timestamp(epoch);
 				PreparedStatement ps = null;
 				switch (metric) {
@@ -69,7 +70,7 @@ public class DBConnector {
 				ps.setString(2, vm);
 				ps.setTimestamp(3, timestamp);
 				ps.setString(4, unit);
-				ps.setFloat(5, value);
+				ps.setDouble(5, value);
 				ps.addBatch();
 			}
 			cpups.executeBatch();
@@ -79,9 +80,5 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		DBConnector connector = new DBConnector("dbconnector.properties");
 	}
 }
