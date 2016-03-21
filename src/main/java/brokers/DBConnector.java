@@ -3,7 +3,9 @@ package brokers;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 import org.json.simple.JSONArray;
@@ -79,6 +81,29 @@ public class DBConnector {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+	}
+	
+	/**
+	 * Returns the average of the readings for each VM.
+	 * @param metric can be "cpu", "disk", "memory"
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public JSONObject getAverages(String metric) {
+		JSONObject averages = new JSONObject();
+		
+		String sql = "select vm, avg(value) as avg from " + metric + " group by vm order by vm";
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String vm = rs.getString("vm");
+				float avg = rs.getFloat("avg");
+				averages.put(vm, new Float(avg));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return averages;
 	}
 }

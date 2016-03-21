@@ -15,15 +15,15 @@ public class Producer implements Runnable {
 	private static final int INTER_SAMPLE_SLEEP_MILLIS = 5000; // Milliseconds to sleep between each measurement
 	private static final float PERCENT_MULTIPLIER = 100.0f;
 
-	private int numMinutes;
+	private int numIterations;
 	private String publisherTopic;
 	private String host;
 	private String vm;
 	private Random random;
 	private Publisher publisher;
 
-	public Producer(int numMinutes, String publisherTopic, String publisherPropertiesFile) {
-		this.numMinutes = numMinutes;
+	public Producer(int numIterations, String publisherTopic, String publisherPropertiesFile) {
+		this.numIterations = numIterations;
 		this.publisherTopic = publisherTopic;
 		this.random = new Random();
 		publisher = new Publisher(publisherPropertiesFile);
@@ -44,7 +44,7 @@ public class Producer implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		for (int i = 0; i < numMinutes; i++) {
+		for (int i = 0; i < numIterations; i++) {
 			JSONObject cpu = createMetric("cpu");
 			JSONObject dsk = createMetric("disk");
 			JSONObject mem = createMetric("memory");
@@ -53,7 +53,7 @@ public class Producer implements Runnable {
 			publisher.send(publisherTopic, mem);
 			// Sleep for a minute to emulate once a minute metrics generation.
 			// Skip the sleep after the last metric generation.
-			if (i < (numMinutes - 1)) {
+			if (i < (numIterations - 1)) {
 				try {
 					Thread.sleep(INTER_SAMPLE_SLEEP_MILLIS);
 				} catch (InterruptedException e) {
