@@ -24,12 +24,20 @@ A calculator queries the database to compute stastics on data to determine candi
 
 ## IDE
 
-This project was developed and tested using the Eclipse IDE on Mac OS X. 
+This project was developed and executed using the Eclipse Luna IDE with the Eclipse Maven Plugin (m2e 1.5.1) on Mac OS X. 
 
 You are free to use other options, but please comprehend all dependencies and changes that would require.  
 
-1. Eclipse Luna 
-2. Eclipse Maven Plugin (m2e 1.5.1)
+The most important being that you will need maven to build, and package the executables.
+
+You will need to ensure that you CLASSPATH contains the following JAR files:
+
+1. kafka-clients-0.9.0.0.jar
+2. slf4j-api-1.7.6.jar
+3. snappy-java-1.1.1.7.jar
+4. lz4-1.2.0.jar
+5. json-simple-1.1.jar
+6. mysql-connector-java-5.1.38.jar
 
 ## Install Packages
 
@@ -126,25 +134,17 @@ Choose Java Application
 ```
 
 ## Config Files
-The config files have been set up to ensure that most executions do not need a recompile.
+The config files have been set up with sensibe configs to ensure that the vast executions do not need a recompile.
 
-### publisher.properties
-This file contains the KafkaProducer class config settings.
-
-### subscriber.properties
-This file contains the KafkaConsumer class config settings.
-
-### producerpool.properties
-This file contains the settings related to the number of producers and the control of each producer.
-
-### transformer.properties
-This file tells the Transofrmer class the Subscriber properties to use for picking up message, and the DBConnector for storing messages.
-
-### dbconnector.properties
-This file contains the DBConnecor class the JDBC driver and database URI to use.
-
-### calculator.properties
+1. publisher.properties: This file contains the KafkaProducer class config settings.
+2. subscriber.properties: This file contains the KafkaConsumer class config settings.
+3. producerpool.properties: This file contains the settings related to the number of producers and the control of each producer.
+4. transformer.properties: This file tells the Transofrmer class the Subscriber properties to use for picking up message, and the DBConnector for storing messages.
+5. dbconnector.properties: This file contains the DBConnecor class the JDBC driver and database URI to use.
+6. calculator.properties
 This file tells the Calculator class the details of the thresholds for selecting candidates and the DBConnector properties to use.
+
+
 
 
 
