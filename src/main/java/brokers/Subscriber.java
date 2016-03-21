@@ -5,6 +5,10 @@ import java.util.Arrays;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import utils.PropertiesLoader;
 
@@ -12,28 +16,29 @@ public class Subscriber {
 	
 	private KafkaConsumer<String, String> receiver;
 	
-    public Subscriber() {
-        this("subscriber.properties");
-    }
-
     public Subscriber(String propertiesFile) {
         PropertiesLoader loader = new PropertiesLoader(propertiesFile);
         receiver = new KafkaConsumer<>(loader.getProperties());
     }
     
-    public void receive(String topic) {
+    @SuppressWarnings("unchecked")
+	public JSONArray receive(String topic) {
         receiver.subscribe(Arrays.asList(topic));
-    	while(true) {
-    		ConsumerRecords<String, String> records = receiver.poll(1000);
-    		for (ConsumerRecord<String, String> record: records) {
-    			System.out.printf("offset = %d, value = %s\n", record.offset(), record.value());
-    		}
+    	ConsumerRecords<String, String> records = receiver.poll(1000);
+    	if (records.isEmpty()) {
+    		return null;
     	}
+    	JSONParser parser = new JSONParser();
+    	JSONArray results = new JSONArray();
+    	for (ConsumerRecord<String, String> record: records) {
+    			System.out.println(record.value());
+    			try {
+					results.add((JSONObject) parser.parse(record.value()));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+    	}
+    	return results;
     }
 
-    public static void main(String[] args) {
-        Subscriber receiver = new Subscriber();
-        receiver.receive("metrics");
-        
-    }
 }

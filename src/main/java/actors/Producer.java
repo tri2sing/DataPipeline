@@ -11,10 +11,6 @@ import brokers.Publisher;
 
 public class Producer implements Runnable {
 
-	private static final int DEFAULT_MINUTES = 5; // Default duration to run the producer
-	private static final String DEFAULT_TOPIC = "metrics";
-	private static final String DEFAULT_PUBLISHER_PROPS_FILE = "publisher.properties";
-
 	private static final int INTIAL_SLEEP_MILLIS = 15000; // Initial sleep range to randomize thread start times.
 	private static final int INTER_SAMPLE_SLEEP_MILLIS = 60000; // Milliseconds to sleep between each measurement
 	private static final float PERCENT_MULTIPLIER = 100.0f;
@@ -25,10 +21,6 @@ public class Producer implements Runnable {
 	private String vm;
 	private Random random;
 	private Publisher publisher;
-
-	public Producer() {
-		this(DEFAULT_MINUTES, DEFAULT_TOPIC, DEFAULT_PUBLISHER_PROPS_FILE);
-	}
 
 	public Producer(int numMinutes, String publisherTopic, String publisherPropertiesFile) {
 		this.numMinutes = numMinutes;
@@ -68,7 +60,7 @@ public class Producer implements Runnable {
 					e.printStackTrace();
 				}
 			}
-			System.out.format("Host = %s, VM = %s, Iteration = %d\n", host, vm, i);
+			System.out.printf("Host = %s, VM = %s, Iteration = %d\n", host, vm, i);
 		}
 	}
 
@@ -76,20 +68,20 @@ public class Producer implements Runnable {
 	 * Generate a random utilization metric in range [0%, 100%) 
 	 * 0% is inclusive and 100% is exclusive due to use of default random generator.
 	 * 
-	 * @param object can be "cpu", "disk", "memory", etc.
+	 * @param metric can be "cpu", "disk", "memory", etc.
 	 * @return a JSON object with corresponding metric.
 	 */
 	// JSONObject is built using HashMap without parameterizing <k, v> correctly.
 	// Hence we put in the suppress warning annotation when using the put method.
 	@SuppressWarnings("unchecked")
-	private JSONObject createMetric(String object) {
+	private JSONObject createMetric(String metric) {
 		JSONObject obj = new JSONObject();
+		obj.put("metric", metric);
 		obj.put("host", this.host);
 		obj.put("vm", this.vm);
-		obj.put("object", object);
-		obj.put("type", "percentutilization");
+		obj.put("unit", "percent");
 		obj.put("value", new Float(random.nextFloat() * PERCENT_MULTIPLIER));
-		obj.put("timestamp", System.currentTimeMillis()); // Time since Epoch.
+		obj.put("epoch", System.currentTimeMillis()); // Time since Epoch.
 		return obj;
 	}
 

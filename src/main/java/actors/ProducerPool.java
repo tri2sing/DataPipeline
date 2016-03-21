@@ -10,10 +10,6 @@ public class ProducerPool {
 	private String publisherTopic;
 	private String pubPropsFile;
 
-	public ProducerPool() {
-		this("producerpool.properties");
-	}
-	
 	public ProducerPool(String propertiesFile) {
         PropertiesLoader loader = new PropertiesLoader(propertiesFile);
         this.publisherTopic = loader.getProperty("producer.publish.topic");
@@ -57,7 +53,7 @@ public class ProducerPool {
 	}
 	
 	public static void main(String [] args) {
-		ProducerPool pool = new ProducerPool();
+		ProducerPool pool = new ProducerPool("producerpool.properties");
 		pool.emulate();
 	}
 }

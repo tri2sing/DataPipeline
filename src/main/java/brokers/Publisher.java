@@ -10,10 +10,6 @@ public class Publisher {
 	
 	private KafkaProducer<String, String> sender;
 	
-	public Publisher() {
-		this("publisher.properties");
-	}
-	
 	public Publisher(String propertiesFile) {
         PropertiesLoader loader = new PropertiesLoader(propertiesFile);
 		sender = new KafkaProducer<String, String>(loader.getProperties());
@@ -27,13 +23,4 @@ public class Publisher {
 		sender.send(new ProducerRecord<String, String>(topic, message));
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void main(String[] args) {
-		Publisher s = new Publisher();
-		for (int i = 0; i < 100; i++) {
-			JSONObject obj = new JSONObject();
-			obj.put("id", new Integer(i));
-			s.send("metrics", obj);
-		}
-	}
 }
