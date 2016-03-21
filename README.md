@@ -65,6 +65,19 @@ mysql> CREATE TABLE DISK ( Host VARCHAR(128), VM VARCHAR(128), Timestamp DATETIM
 mysql> CREATE TABLE MEMORY ( Host VARCHAR(128), VM VARCHAR(128), Timestamp DATETIME, Type VARCHAR(128), Value DECIMAL(8,2) );
 ```
 
+Import the repository into Eclipse
+```
+Launch Eclipse 
+Open File Menu 
+Choose Import 
+Choose Git 
+Choose Projects from Git 
+Choose Clone URI  
+Enter https://github.com/tri2sing/DataPipeline.git
+```
+
+
+
 
 
 
