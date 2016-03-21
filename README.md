@@ -9,6 +9,9 @@ A transformer picks the data from the queue and store into a database tables acc
 
 A calculator queries the database to compute stastics on data to determine candidate below threshold.
 
+## Architecture
+
+
 ## Dependencies
 
 1. OS X Yosemite Version 10.10.5
