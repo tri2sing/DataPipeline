@@ -19,8 +19,10 @@ The consumer stores the data in a database and then uses the data to compute sta
 9. mysql-connector-java-5.1.38
 10. json-simple-1.1
 
-## Development Environment
-This project was developed in one IDE. You are free to use another, but please comprehend all dependencies.  
+## IDE
+This project was developed and tested using the Eclipse IDE on Mac OS X. 
+
+You are free to use another, but please comprehend all dependencies and changes that would require.  
 
 1. Eclipse Luna 
 2. Eclipse Maven Plugin (m2e 1.5.1)
