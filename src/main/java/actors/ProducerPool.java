@@ -7,6 +7,7 @@ public class ProducerPool {
 	private Thread[] producer;
 	private int numProducers;
 	private int numIterations;
+	private int sleepSecs;
 	private String publisherTopic;
 	private String pubPropsFile;
 
@@ -17,26 +18,16 @@ public class ProducerPool {
 		try {
 			this.numProducers = Integer.parseInt(loader.getProperty("producers.count"));
 			this.numIterations = Integer.parseInt(loader.getProperty("producer.iterations"));
+			this.sleepSecs = Integer.parseInt(loader.getProperty("producer.sleep.seconds"));
 		} catch (NumberFormatException nfe) {
 			System.out.println(nfe.getMessage());
 		}
-		instantiateProducers();
-	}
-
-	public ProducerPool(int numProducers, int numIterations, String publisherTopic, String publisherPropertiesFile) {
-		this.numProducers = numProducers;
-		this.numIterations = numIterations;
-		this.publisherTopic = publisherTopic;
-		this.pubPropsFile = publisherPropertiesFile;
-		instantiateProducers();
-	}
-
-	private void instantiateProducers() {
 		producer = new Thread[numProducers];
 		for (int i = 0; i < numProducers; i++) {
-			producer[i] = new Thread(new Producer(numIterations, publisherTopic, pubPropsFile));
+			producer[i] = new Thread(new Producer(numIterations, sleepSecs, publisherTopic, pubPropsFile));
 		}
 	}
+
 
 	public void emulate() {
 		for (int i = 0; i < numProducers; i++) {

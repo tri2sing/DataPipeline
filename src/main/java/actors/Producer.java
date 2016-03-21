@@ -11,19 +11,19 @@ import brokers.Publisher;
 
 public class Producer implements Runnable {
 
-	private static final int INTIAL_SLEEP_MILLIS = 15000; // Initial sleep range to randomize thread start times.
-	private static final int INTER_SAMPLE_SLEEP_MILLIS = 5000; // Milliseconds to sleep between each measurement
 	private static final float PERCENT_MULTIPLIER = 100.0f;
 
 	private int numIterations;
+	private int sleepSecs;
 	private String publisherTopic;
 	private String host;
 	private String vm;
 	private Random random;
 	private Publisher publisher;
 
-	public Producer(int numIterations, String publisherTopic, String publisherPropertiesFile) {
+	public Producer(int numIterations, int sleepSecs, String publisherTopic, String publisherPropertiesFile) {
 		this.numIterations = numIterations;
+		this.sleepSecs = sleepSecs;
 		this.publisherTopic = publisherTopic;
 		this.random = new Random();
 		publisher = new Publisher(publisherPropertiesFile);
@@ -38,12 +38,6 @@ public class Producer implements Runnable {
 	public void run() {
 		long id = Thread.currentThread().getId();
 		this.vm = Long.toString(id);
-		int millis = random.nextInt(INTIAL_SLEEP_MILLIS + 1);
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		for (int i = 0; i < numIterations; i++) {
 			JSONObject cpu = createMetric("cpu");
 			JSONObject dsk = createMetric("disk");
@@ -55,7 +49,7 @@ public class Producer implements Runnable {
 			// Skip the sleep after the last metric generation.
 			if (i < (numIterations - 1)) {
 				try {
-					Thread.sleep(INTER_SAMPLE_SLEEP_MILLIS);
+					Thread.sleep(sleepSecs * 1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

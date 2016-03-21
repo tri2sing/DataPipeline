@@ -1,5 +1,9 @@
 package actors;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.json.simple.JSONObject;
 
 import brokers.DBConnector;
@@ -24,12 +28,33 @@ public class Calculator {
 	}
 	
 	public void calculate() {
+		HashSet<String> candidates = new HashSet<>();
 		JSONObject cpuAvgs = dbconnector.getAverages("cpu");
 		JSONObject dskAvgs = dbconnector.getAverages("disk");
 		JSONObject memAvgs = dbconnector.getAverages("memory");
-		System.out.println("Number of cpu averages = " + cpuAvgs.size());
-		System.out.println("Number of disk averages = " + dskAvgs.size());
-		System.out.println("Number of memory averages = " + memAvgs.size());
+		for (Object entry: cpuAvgs.entrySet()) {
+			Map.Entry<String, Float> eCast = (Map.Entry<String, Float>) entry;
+			String hostvm = eCast.getKey();
+			Float cpuVal = eCast.getValue();
+			float dskVal = (Float) dskAvgs.get(hostvm);
+			float memVal = (Float) memAvgs.get(hostvm);
+			if (cpuVal < cpuThresholdPercent && dskVal < dskThresholdPercent && memVal < memThresholdPercent) {
+				candidates.add(hostvm);
+			}
+		}
+		if (candidates.size() == 0) {
+			System.out.println("There are no reclamantion candidates");
+		}
+		else {
+			System.out.println("The reclamantion candidates are:");
+			System.out.println("Host:VM");
+			System.out.println("=======");
+			Iterator<String> itr = candidates.iterator();
+			while(itr.hasNext()) {
+				System.out.println(itr.next());
+			}
+		}
+		
 	}
 	
 	public static void main(String[] args) {

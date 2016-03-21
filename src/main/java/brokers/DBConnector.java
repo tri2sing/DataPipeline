@@ -92,14 +92,15 @@ public class DBConnector {
 	public JSONObject getAverages(String metric) {
 		JSONObject averages = new JSONObject();
 		
-		String sql = "select vm, avg(value) as avg from " + metric + " group by vm order by vm";
+		String sql = "select host, vm, avg(value) as avg from " + metric + " group by host, vm order by vm";
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String vm = rs.getString("vm");
+				String host = rs.getString("host");
 				float avg = rs.getFloat("avg");
-				averages.put(vm, new Float(avg));
+				averages.put(host + ":" + vm, new Float(avg));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
