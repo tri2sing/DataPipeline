@@ -15,7 +15,7 @@ The image below shows the components of the architecture.
 ![System Architecture](https://github.com/tri2sing/DataPipeline/raw/master/img/SystemArchitecture.png)
 
 ### Scalability 
-The architecture has been designed to be scalable to large number of producers.
+The architecture has been designed to be scalable to large volume of data.
 
 1. Producers: Multiple instances of the producer can be launched.
 2. Queue: Kafka has been chosen as a scale out solution.  Producer and Transformer do not directly access Kafka.  They use the Publisher and Subscriber brokers respectively.  This provides a mechanism to swap out Kafka in the future.
