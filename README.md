@@ -14,6 +14,15 @@ The image below shows the components of the architecture.
 
 ![System Architecture](https://github.com/tri2sing/DataPipeline/raw/master/img/SystemArchitecture.png)
 
+### Scalability 
+The architecture has been designed to be scalable to large number of producers.
+
+1. Producers: Multiple instances of the producer can be launched.
+2. Queue: Kafka has been chosen as a scale out solution.  Producer and Transformer do not directly access Kafka.  They use the Publisher and Subscriber brokers respectively.  This provides a mechanism to swap out Kafka in the future.
+3. Tranformer: Currently single threaded (Kafka topic poll is not thread-safe).  Requires minimal work to make it multithreaded.  Currently left out due to time crunch.
+4. Database: The schema has been kept denormalized to improve speed.  In essence, mimicking NoSQL paradigm.  The Transfomer and the Calculator do not directly access MySQL.  The use the DBConnector broker.  This allows for replacement with a more scalable solution like OpenTSB built on HBase.  Currently left out due to time crunch.
+5. Calculator: Currently single threaded.  Will require thought to make it multithreaded. Most likely it will require replacing MySQL with alternative solution. 
+
 ## Dependencies
 
 1. OS X Yosemite Version 10.10.5
