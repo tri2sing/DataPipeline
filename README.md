@@ -98,12 +98,53 @@ Choose Build
 
 ## Execute Pipeline 
 
-Execute the Transformer
+In the actors package of the DataPipeline project are all the workflow components: producer, transformer, and calculator.
 
-Execute the Producers
+Execute the Transformer, which has an infinite loop to take queue data and put it in the database.
+```
+Open Package Explorer
+Select Transformer.java 
+Right Click
+Choose Run As
+Choose Java Application
+```
+Execute the Producers, which generate random value for the metrics and sleep between each measurement.
+```
+Open Package Explorer
+Select ProducerPool.java 
+Right Click
+Choose Run As
+Choose Java Application
+```
+Execute the Calculator, once the producers have completed their data generation.
+```
+Open Package Explorer
+Select Calculator.java 
+Right Click
+Choose Run As
+Choose Java Application
+```
 
-Execute the Calculator
+## Config Files
+The config files have been set up to ensure that most executions do not need a recompile.
 
+### publisher.properties
+This file contains the KafkaProducer class config settings.
+
+### subscriber.properties
+This file contains the KafkaConsumer class config settings.
+
+### producerpool.properties
+This file contains the settings related to the number of producers and the control of each producer.
+
+### transformer.properties
+This file tells the Transofrmer class the Subscriber properties to use for picking up message, and the DBConnector for storing messages.
+
+### dbconnector.properties
+This file contains the DBConnecor class the JDBC driver and database URI to use.
+
+### calculator.properties
+This file tells the Calculator class the details of the thresholds for selecting candidates and the DBConnector properties to use.
 
 
 
