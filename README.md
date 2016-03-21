@@ -11,7 +11,7 @@ A calculator queries the database to compute stastics on data to determine candi
 
 ## Architecture
 The image below shows the components of the architecture.
-
+![System Architecture](https://github.com/tri2sing/DataPipeline/raw/master/img/SystemArchitecture.png)
 
 ### Scalability 
 The architecture has been designed to be scalable to large volume of data.
