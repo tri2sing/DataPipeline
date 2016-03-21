@@ -10,7 +10,8 @@ A transformer picks the data from the queue and store into a database tables acc
 A calculator queries the database to compute stastics on data to determine candidate below threshold.
 
 ## Architecture
-
+The image below shows the components of the architecture.
+![System Architecture](https://github.com/{tri2sing}/{DataPipeline}/raw/master/img/SystemArchitecture.png)
 
 ## Dependencies
 
